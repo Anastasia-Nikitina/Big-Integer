@@ -1,0 +1,4 @@
+﻿let x = 5
+let y = 3
+let z = 5 + 3
+print z
