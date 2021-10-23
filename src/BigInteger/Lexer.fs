@@ -1,6 +1,6 @@
 module Lexer
 # 1 "Lexer.fsl"
-(*module Lexer*)
+ 
 // Opens methods related to fslex.exe
 open FSharp.Text.Lexing
 
@@ -9,7 +9,7 @@ let newline (lexbuf: LexBuffer<_>) =
 
 let lexeme x = LexBuffer<_>.LexemeString x
 
-# 13 "Lexer.fs"
+# 12 "Lexer.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -94,99 +94,99 @@ let rec _fslex_dummy () = _fslex_dummy()
 and tokenStream  lexbuf =
   match _fslex_tables.Interpret(0,lexbuf) with
   | 0 -> ( 
-# 25 "Lexer.fsl"
+# 24 "Lexer.fsl"
                               tokenStream lexbuf 
-# 100 "Lexer.fs"
+# 99 "Lexer.fs"
           )
   | 1 -> ( 
-# 26 "Lexer.fsl"
+# 25 "Lexer.fsl"
                            tokenStream lexbuf 
-# 105 "Lexer.fs"
+# 104 "Lexer.fs"
           )
   | 2 -> ( 
-# 28 "Lexer.fsl"
+# 27 "Lexer.fsl"
                        Parser.LBR 
-# 110 "Lexer.fs"
+# 109 "Lexer.fs"
           )
   | 3 -> ( 
-# 29 "Lexer.fsl"
+# 28 "Lexer.fsl"
                        Parser.RBR 
-# 115 "Lexer.fs"
+# 114 "Lexer.fs"
           )
   | 4 -> ( 
-# 30 "Lexer.fsl"
+# 29 "Lexer.fsl"
                        Parser.SUM 
-# 120 "Lexer.fs"
+# 119 "Lexer.fs"
           )
   | 5 -> ( 
-# 31 "Lexer.fsl"
+# 30 "Lexer.fsl"
                        Parser.SUB 
-# 125 "Lexer.fs"
+# 124 "Lexer.fs"
           )
   | 6 -> ( 
-# 32 "Lexer.fsl"
+# 31 "Lexer.fsl"
                        Parser.MUL 
-# 130 "Lexer.fs"
+# 129 "Lexer.fs"
           )
   | 7 -> ( 
-# 33 "Lexer.fsl"
+# 32 "Lexer.fsl"
                        Parser.DIV 
-# 135 "Lexer.fs"
+# 134 "Lexer.fs"
           )
   | 8 -> ( 
-# 34 "Lexer.fsl"
+# 33 "Lexer.fsl"
                        Parser.EQ 
-# 140 "Lexer.fs"
+# 139 "Lexer.fs"
           )
   | 9 -> ( 
-# 35 "Lexer.fsl"
+# 34 "Lexer.fsl"
                        Parser.ABS 
-# 145 "Lexer.fs"
+# 144 "Lexer.fs"
           )
   | 10 -> ( 
-# 36 "Lexer.fsl"
+# 35 "Lexer.fsl"
                        Parser.REM 
-# 150 "Lexer.fs"
+# 149 "Lexer.fs"
           )
   | 11 -> ( 
-# 37 "Lexer.fsl"
+# 36 "Lexer.fsl"
                        Parser.POW 
-# 155 "Lexer.fs"
+# 154 "Lexer.fs"
           )
   | 12 -> ( 
-# 38 "Lexer.fsl"
+# 37 "Lexer.fsl"
                        Parser.BIN 
-# 160 "Lexer.fs"
+# 159 "Lexer.fs"
           )
   | 13 -> ( 
-# 39 "Lexer.fsl"
+# 38 "Lexer.fsl"
                          Parser.KW_LET 
-# 165 "Lexer.fs"
+# 164 "Lexer.fs"
           )
   | 14 -> ( 
-# 40 "Lexer.fsl"
+# 39 "Lexer.fsl"
                            Parser.KW_PRINT 
-# 170 "Lexer.fs"
+# 169 "Lexer.fs"
           )
   | 15 -> ( 
-# 41 "Lexer.fsl"
+# 40 "Lexer.fsl"
                          Parser.VNAME(lexeme lexbuf) 
-# 175 "Lexer.fs"
+# 174 "Lexer.fs"
           )
   | 16 -> ( 
-# 43 "Lexer.fsl"
+# 42 "Lexer.fsl"
                            Parser.NUM((LexBuffer<_>.LexemeString lexbuf).Trim() |> BigInt.StringToNWS) 
-# 180 "Lexer.fs"
+# 179 "Lexer.fs"
           )
   | 17 -> ( 
-# 45 "Lexer.fsl"
+# 44 "Lexer.fsl"
                           failwith ("Lexer error. Unexpected symbol: " + LexBuffer<_>.LexemeString lexbuf) 
-# 185 "Lexer.fs"
+# 184 "Lexer.fs"
           )
   | 18 -> ( 
-# 46 "Lexer.fsl"
+# 45 "Lexer.fsl"
                           Parser.EOF 
-# 190 "Lexer.fs"
+# 189 "Lexer.fs"
           )
   | _ -> failwith "tokenStream"
 

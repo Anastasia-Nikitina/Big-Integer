@@ -1,5 +1,4 @@
 ﻿{
-module Lexer
 // Opens methods related to fslex.exe
 open FSharp.Text.Lexing
 
@@ -40,7 +39,7 @@ rule tokenStream = parse
 | "print" { Parser.KW_PRINT }
 | vname { Parser.VNAME(lexeme lexbuf) }
 // --------------------------
-| number		{ Parser.NUM((LexBuffer<_>.LexemeString lexbuf).Trim() |> BigInteger.BigInt.StringToNWS) }
+| number		{ Parser.NUM((LexBuffer<_>.LexemeString lexbuf).Trim() |> BigInt.StringToNWS) }
 // --------------------------
 | _    		{ failwith ("Lexer error. Unexpected symbol: " + LexBuffer<_>.LexemeString lexbuf) }
 | eof   	{ Parser.EOF }
