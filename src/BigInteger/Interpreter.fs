@@ -13,7 +13,7 @@ let rec processExpr (vDict:Dictionary<AST.VName,AST.Expression>) expr =
             | _ -> failwithf "Variable %A is not declared." nv
         processExpr vDict data
     | AST.Sum (x, y) -> addition (processExpr vDict x) (processExpr vDict y)
-    | AST.Sub (x, y) -> substraction (processExpr vDict x) (processExpr vDict y)
+    | AST.Sub (x, y) -> subtraction (processExpr vDict x) (processExpr vDict y)
     | AST.Mul (x, y) -> multiplication (processExpr vDict x) (processExpr vDict y)
     | AST.Div (x, y) -> division (processExpr vDict x) (processExpr vDict y)
     | AST.Rem (x, y) -> remainder (processExpr vDict x) (processExpr vDict y)

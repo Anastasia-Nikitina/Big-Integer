@@ -3,12 +3,13 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="MyList.fs"/>
-        <Compile Include="BigInt.fs"/>
-        <Compile Include="AST.fs"/>
+        <Compile Include="MyList.fs" />
+        <Compile Include="BigInt.fs" />
+        <Compile Include="AST.fs" />
 
         <FsYacc Include="Parser.fsy">
             <OtherFlags>--module Parser</OtherFlags>
@@ -18,14 +19,14 @@
             <OtherFlags>--module Lexer --unicode</OtherFlags>
         </FsLex>
 
-        <Compile Include="Parser.fsi"/>
-        <Compile Include="Parser.fs"/>
-        <Compile Include="Lexer.fs"/>
-        <Compile Include="Interpreter.fs"/>
-        <Compile Include="toDot.fs"/>
-        <Content Include="test.txt"/>
-        <Compile Include="Program.fs"/>
+        <Compile Include="Parser.fsi" />
+        <Compile Include="Parser.fs" />
+        <Compile Include="Lexer.fs" />
+        <Compile Include="Interpreter.fs" />
+        <Compile Include="toDot.fs" />
+        <Content Include="test.txt" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
 
-    <Import Project="..\..\.paket\Paket.Restore.targets"/>
+    <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

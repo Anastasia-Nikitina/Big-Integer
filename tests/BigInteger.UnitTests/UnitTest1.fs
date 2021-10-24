@@ -33,7 +33,6 @@ let intToBinary x =
         c <- c / 2
     int64 r               
 
-
 [<Tests>]
 let Tests1 =
     testList "Tests for helping functions"
@@ -42,9 +41,9 @@ let Tests1 =
             let a2 = Cons(1, Cons(5, Single 3))
             let a3 = Cons(1, Cons(7, Cons(8, Single 4)))
             let a4 = Cons(1, Cons(5, Single 0))
-            Expect.isTrue (comparision a1 a4) ""
-            Expect.isFalse (comparision a1 a2) ""
-            Expect.isTrue (comparision a3 a1)  ""
+            Expect.isTrue (fstGreaterThanSec a1 a4) ""
+            Expect.isFalse (fstGreaterThanSec a1 a2) ""
+            Expect.isTrue (fstGreaterThanSec a3 a1)  ""
          testCase "Test for slice" <| fun _  ->
             let a = Cons(1, Cons(2, Cons(3, Cons(4, Single 5))))
             let a1 = Cons(1, Cons(2, Single 3))
@@ -88,7 +87,7 @@ let Tests2 =
             let a1 = genRandomBigInteger 30
             let a2 = genRandomBigInteger 30
             let exp = SystemToMyBigInt (a1 - a2)
-            let res = substraction (SystemToMyBigInt a1)  (SystemToMyBigInt a2)
+            let res = subtraction (SystemToMyBigInt a1)  (SystemToMyBigInt a2)
             Expect.isTrue (isEqualNWS exp res)
          testProperty "Test for division" <| fun _ ->
             let a1 = genRandomBigInteger 10

@@ -25,7 +25,7 @@ type CLIArguments =
                 | InputString _ -> "String of code" 
                 | Compute -> "Return the result of interptetation of given code"
                 | ToDot _ -> "Generates dot code of syntax tree to the given file"
-    let parse text =
+ let parse text =
         let lexbuf = LexBuffer<char>.FromString text
         let parsed = Parser.start Lexer.tokenStream lexbuf
         parsed
