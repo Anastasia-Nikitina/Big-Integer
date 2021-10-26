@@ -24,7 +24,6 @@
         <Compile Include="Lexer.fs" />
         <Compile Include="Interpreter.fs" />
         <Compile Include="toDot.fs" />
-        <Content Include="test.txt" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

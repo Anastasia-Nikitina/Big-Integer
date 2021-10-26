@@ -1,6 +1,5 @@
 ﻿%{
 
-
 %}
 
 %start start
@@ -29,16 +28,9 @@
 
 start: stmt {[$1]}
      | stmt start {$1 :: $2}
-
-
+     
 stmt: KW_PRINT vname {AST.Print($2)}
     | KW_LET vname EQ expr {AST.VDecl($2,$4)}
-    | vname {failwith "parse error"}
-    | NUM {failwith "parse error"}
-    | LBR {failwith "parse error"}
-    | RBR {failwith "parse error"}
-    | ABS {failwith "parse error"}
-
 
 expr: rexpr {$1}
     | expr SUM rexpr {AST.Sum($1, $3)}

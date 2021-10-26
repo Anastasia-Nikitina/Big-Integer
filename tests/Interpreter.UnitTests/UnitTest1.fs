@@ -37,7 +37,4 @@ let tests =
         testCase "Test for zero division" <| fun _ ->                
             let input = "let x = 75 / 0"
             Expect.throws (fun _ -> (calculate (parse input)) |> ignore) ""
-        testCase "Wrong number test" <| fun _ ->                
-            let input = "let x = 00 + 2"
-            Expect.throws (fun _ -> (calculate (parse input)) |> ignore) ""
-]
+           ]

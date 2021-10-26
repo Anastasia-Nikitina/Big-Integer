@@ -1,7 +1,12 @@
 ﻿module Interpreter
+
+open System
 open System.Collections.Generic
 open BigInt
+open FSharp.Text.Lexing
 
+ 
+let outputBuffer = "print"
 let rec processExpr (vDict:Dictionary<AST.VName,AST.Expression>) expr =
     match expr with
     | AST.Num n -> n
@@ -17,8 +22,8 @@ let rec processExpr (vDict:Dictionary<AST.VName,AST.Expression>) expr =
     | AST.Mul (x, y) -> multiplication (processExpr vDict x) (processExpr vDict y)
     | AST.Div (x, y) -> division (processExpr vDict x) (processExpr vDict y)
     | AST.Rem (x, y) -> remainder (processExpr vDict x) (processExpr vDict y)
-    | AST.Pow (x, y) -> power (processExpr vDict x) (processExpr vDict y) 
-    | AST.Abs x -> abs  (processExpr vDict x)
+    | AST.Pow (x, y) -> power (processExpr vDict x) (processExpr vDict y)
+    | AST.Abs x -> abs (processExpr vDict x)
     | AST.Bin x -> toBin (processExpr vDict x)
 
 let processStmt (vDict:Dictionary<AST.VName,AST.Expression>) (pDict:Dictionary<string,string>) stmt =
@@ -32,8 +37,13 @@ let processStmt (vDict:Dictionary<AST.VName,AST.Expression>) (pDict:Dictionary<s
         match data with
         | AST.Num n ->
             let num = NWSToString n
-            pDict.["print"] <- (pDict.["print"] + (if num.[0] = '+' then num.[1..] else num) + "\n")
-        | _ -> failwith "Num expected"
+            if pDict.ContainsKey outputBuffer
+            then 
+                pDict.[outputBuffer] <- (pDict.[outputBuffer] + (if num.[0] = '+' then num.[1..] else num) + "\n")
+            else
+                pDict.Add (outputBuffer, (if num.[0] = '+' then num.[1..] else num) + "\n")
+        | _ ->
+            failwithf "Num expected, got: %A" data
     | AST.VDecl(v,e) ->
         if vDict.ContainsKey v
         then vDict.[v] <- AST.Num (processExpr vDict e)
@@ -44,8 +54,7 @@ let run ast =
     let vDict = Dictionary<_,_>()
     let pDict = Dictionary<_,_>()
     let varDict = Dictionary<_,_>()
-    pDict.Add("print", "")
-    let vD, pD = List.fold (fun (d1, d2) stmt -> processStmt d1 d2 stmt) (vDict, pDict) ast
+    let vD, _ = List.fold (fun (d1, d2) stmt -> processStmt d1 d2 stmt) (vDict, pDict) ast
     for i in vD.Keys do
         match vD.[i] with
         | AST.Num n -> varDict.[string i] <- NWSToString n
@@ -55,4 +64,23 @@ let run ast =
 let calculate (ast:AST.Stmt list) =
     match ast.[0] with
     | AST.VDecl (_, e) -> processExpr (Dictionary<_,_>()) e
-    | _ -> failwith "unexpected statement"  
+    | _ -> failwithf "Unexpected statement %A" ast.[0]
+
+let parse text =
+    let lexbuf = LexBuffer<char>.FromString text
+    try
+        let parsed =
+            lexbuf
+            |> Parser.start Lexer.tokenStream
+        parsed
+    with errorMsg -> 
+        let pos = lexbuf.EndPos
+        let line = pos.Line
+        let column = pos.Column
+        let message = errorMsg.Message
+        let lastToken = String(lexbuf.Lexeme)
+        printf "Parsing failed at: "
+        printfn "line %A, column %A;" (line+1) (column+1)
+        printfn "Last token %A" lastToken
+        printfn "Message %A" message
+        exit 1   

@@ -1,5 +1,6 @@
 ﻿module toDot
 open BigInt
+open MyList
 open AST
 
     let rec drawTree ast output =
@@ -68,4 +69,4 @@ open AST
 
         let firstLabel = createStr "list<Stmt>" 0
 
-        System.IO.File.WriteAllText (output, ListToString (["digraph G {\n"] @ (go ast firstLabel) @ ["}"]))
+        System.IO.File.WriteAllText (output, listToString (["digraph G {\n"] @ (go ast firstLabel) @ ["}"]))

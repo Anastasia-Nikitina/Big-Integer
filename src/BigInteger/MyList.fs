@@ -4,53 +4,53 @@ type MyList<'t> =
     | Single of 't
     | Cons of 't * MyList<'t>
 
-let rec Fold f acc list =
+let rec fold f acc list =
     match list with
     | Single x -> f acc x
-    | Cons (head, tail) -> Fold f (f acc head) tail
+    | Cons (head, tail) -> fold f (f acc head) tail
 
-let Length list =
-    Fold (fun q x -> q + 1) 0 list
+let length list =
+    fold (fun q x -> q + 1) 0 list
 
-let rec Map f list =
+let rec map f list =
     match list with
     | Single a -> Single (f a)
-    | Cons (head, tail) -> Cons(f head, Map f tail)
+    | Cons (head, tail) -> Cons(f head, map f tail)
 
-let rec Iter f list =
+let rec iter f list =
     match list with
     | Single a -> f a
     | Cons (head, tail) ->
         f head
-        Iter f tail
+        iter f tail
 
-let rec Concat list1 list2 =         
+let rec concat list1 list2 =         
     match list1 with
     | Single x -> Cons(x, list2)
-    | Cons (head, tail) -> Cons (head, Concat tail list2)
+    | Cons (head, tail) -> Cons (head, concat tail list2)
     
-let rec SystemToMyList list =
+let rec systemToMyList list =
     match list with
     | [] -> failwith "Empty list"
     | [a] -> Single a
-    | head :: tail -> Cons (head, SystemToMyList tail)
+    | head :: tail -> Cons (head, systemToMyList tail)
 
-let rec MyListToSystem list =
+let rec myListToSystem list =
     match list with
     | Single x -> [x]
-    | Cons (head, tail) -> head :: MyListToSystem tail
+    | Cons (head, tail) -> head :: myListToSystem tail
 
-let Head list =
+let head list =
     match list with
     | Single x -> x
     | Cons(head, tail) -> head
 
-let Tail list =
+let tail list =
     match list with
     | Single x -> Single x
     | Cons(_, tail) -> tail
 
-let Sort list =
+let sort list =
     let rec go1 list1 =
         match list1 with
         | Single x -> Single x
@@ -63,13 +63,36 @@ let Sort list =
             then Cons (tail, Single head)
             else list1
     let rec go2 (list2: MyList<'t>) k =
-        if k <> Length list2
+        if k <> length list2
         then go2 (go1 list2) (k + 1)
         else list2
     go2 list 0
 
-let ArrayIntoString (array: array<int>) =
+let arrayToString (array: array<int>) =
     let stringArr: array<string> = Array.zeroCreate array.Length
     for i = 0 to array.Length - 1 do
         stringArr.[i] <- string array.[i]
     stringArr
+    
+let listToString list =
+    let rec go list =
+       match list with
+       | head :: tail -> head.ToString() + go tail
+       | [] -> ""
+    go list
+    
+let reverse (x: MyList<int>) =
+   systemToMyList (List.rev (myListToSystem x))
+
+let slice (a: MyList<int>) x1 x2 =
+    systemToMyList ((myListToSystem a).[x1..x2])
+    
+let isEqual (a: MyList<int>) (b: MyList<int>) =
+    let rec go (a: MyList<int>) (b: MyList<int>) =
+        if length a <> length b then false
+        else
+           match (a, b) with
+           | (Single a, Single b) -> a = b 
+           | (Cons(hd_a, tl_a), Cons(hd_b, tl_b)) -> (hd_a = hd_b) && (go tl_a tl_b)
+           | (_, _) -> failwith "Error"
+    go a b            
