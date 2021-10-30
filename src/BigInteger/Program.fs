@@ -45,8 +45,6 @@ let main (argv: string array) =
         if p.Contains(Compute)
         then
             let _, _, pD = Interpreter.run ast
-            printfn "%s" pD.["print"]
+            printfn "%s" pD.[Interpreter.outputBuffer]
         if p.Contains(ToDot) then drawTree ast (results.GetResult ToDot)
-    0
-    
-        
+    0     

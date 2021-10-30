@@ -55,13 +55,11 @@ let Tests1 =
             let a3 = Cons(1, Cons(7, Cons(8, Single 4)))
             Expect.equal a1 a2 ""
             Expect.notEqual a1 a3 ""
-         testProperty "Test for addZeros" <| fun a ->
-            if a <= 0 then Expect.equal 0 0 ""
-            else
-                let a1 = systemToMyList(genRandomList a)
-                let a2 = systemToMyList (genRandomList a)
-                let (res1, res2) = addZeros a1 a2
-                Expect.equal (length res1) (length res2) ""
+         testProperty "Test for addZeros" <| fun m ->
+            let a1 = systemToMyList (genRandomList (abs m + 1))
+            let a2 = systemToMyList (genRandomList (abs m + 1))
+            let (res1, res2) = addZeros a1 a2
+            Expect.equal (length res1) (length res2) ""
          testCase "Test for removeZeros" <| fun _ ->
              let a1 = Cons(1, Cons(5, Single 3))
              let a2 = Cons(0, Cons(0, Cons(0, Cons(1, Cons(5, Single 3)))))
@@ -71,60 +69,60 @@ let Tests1 =
 [<Tests>]
 let Tests2 =
     testList "Tests for BigInt"
-        [testProperty "Test for sum" <| fun _ ->
-            let a1 = genRandomBigInteger 30
-            let a2 = genRandomBigInteger 30
+        [testProperty "Test for sum" <| fun m ->
+            let a1 = genRandomBigInteger (abs m + 1)
+            let a2 = genRandomBigInteger (abs m + 1)
             let exp = systemToMyBigInt (a1 + a2)
             let res = addition (systemToMyBigInt a1)  (systemToMyBigInt a2)
             Expect.isTrue (isEqualNWS exp res)
-         testProperty "Test for mult" <| fun _ ->
-            let a1 = genRandomBigInteger 10
-            let a2 = genRandomBigInteger 10
+         testProperty "Test for mult" <| fun m ->
+            let a1 = genRandomBigInteger (abs m % 10 + 1)
+            let a2 = genRandomBigInteger (abs m % 10 + 1)
             let exp = systemToMyBigInt (a1 * a2)
             let res = multiplication (systemToMyBigInt a1)  (systemToMyBigInt a2)
             Expect.isTrue (isEqualNWS exp res)
-         testProperty "Test for sub" <| fun _ ->
-            let a1 = genRandomBigInteger 30
-            let a2 = genRandomBigInteger 30
+         testProperty "Test for sub" <| fun m ->
+            let a1 = genRandomBigInteger (abs m + 1)
+            let a2 = genRandomBigInteger (abs m + 1)
             let exp = systemToMyBigInt (a1 - a2)
             let res = subtraction (systemToMyBigInt a1)  (systemToMyBigInt a2)
             Expect.isTrue (isEqualNWS exp res)
-         testProperty "Test for division" <| fun _ ->
-            let a1 = genRandomBigInteger 10
-            let a2 = genRandomBigInteger 10
+         testProperty "Test for division" <| fun m ->
+            let a1 = genRandomBigInteger (abs m % 10 + 1)
+            let a2 = genRandomBigInteger (abs m % 10 + 1)
             if a2 = BigInteger 0
             then Expect.equal 0 0
             else
                 let exp = systemToMyBigInt (a1 / a2)
                 let res = division (systemToMyBigInt a1)  (systemToMyBigInt a2)
                 Expect.isTrue (isEqualNWS exp res)
-         testProperty "Test for remainder" <| fun _ ->
-             let a1 = genRandomBigInteger 10
-             let a2 = genRandomBigInteger 10             
+         testProperty "Test for remainder" <| fun m ->
+             let a1 = genRandomBigInteger (abs m % 10 + 1)
+             let a2 = genRandomBigInteger (abs m % 10 + 1)         
              if a2 = BigInteger 0
              then Expect.equal 0 0
              else
                  let exp = systemToMyBigInt (a1 % a2)
                  let res = remainder (systemToMyBigInt a1)  (systemToMyBigInt a2)
                  Expect.isTrue (isEqualNWS exp res)
-         testProperty "Test for unMinus" <| fun _ ->
-            let a1 = genRandomBigInteger 20
+         testProperty "Test for unMinus" <| fun m ->
+            let a1 = genRandomBigInteger (abs m + 1)
             let exp = systemToMyBigInt (a1 * BigInteger (-1))
             let res = unMinus (systemToMyBigInt a1)
             Expect.isTrue (isEqualNWS res exp)
-         testProperty "Test for power" <| fun _ ->
-             let a1 = genRandomBigInteger 5
+         testProperty "Test for power" <| fun m ->
+             let a1 = genRandomBigInteger (abs (m % 5) + 1)
              let a2 = rand.Next(5)
              let exp = systemToMyBigInt (a1 ** int(a2))
              let res = power (systemToMyBigInt a1) (systemToMyBigInt (BigInteger(a2)))
              Expect.isTrue (isEqualNWS res exp) 
-         testProperty "Test for abs" <| fun _ ->
-              let a = (genRandomBigInteger 20)*BigInteger(-1)
+         testProperty "Test for abs" <| fun m ->
+              let a = (genRandomBigInteger (abs m + 1)) * BigInteger(-1)
               let exp = systemToMyBigInt (a * BigInteger(-1))
-              let res = abs (systemToMyBigInt a)
+              let res = absNWS (systemToMyBigInt a)
               Expect.isTrue (isEqualNWS res exp) "" 
-         testProperty "toBinary test" <| fun _ ->
-            let x = System.Random().Next(1000) 
+         testProperty "toBinary test" <| fun m ->
+            let x = System.Random().Next(abs m) 
             let s = BigInteger (intToBinary x) 
             let x1 = systemToMyBigInt (BigInteger x)
             let sb = toBin x1
@@ -138,7 +136,7 @@ let Tests3 =
              let res = addition (stringToNWS (string a)) (stringToNWS (string b)) 
              let exp = stringToNWS (string (a + b))
              Expect.isTrue (isEqualNWS res exp)
-          testProperty "Test for mult" <| fun (a: int64, b: int64) ->
+          testProperty "Test for mult" <| fun (a:  BigInteger, b: BigInteger) ->
              let res = multiplication (stringToNWS (string a)) (stringToNWS (string b))
              let exp = stringToNWS (string (a * b))
              Expect.isTrue (isEqualNWS res exp)
@@ -163,7 +161,7 @@ let Tests3 =
               let exp = stringToNWS (string (- a))
               Expect.isTrue (isEqualNWS res exp)
           testProperty "Test for abs" <| fun (a: int64) ->
-              let res = abs (stringToNWS (string a))
+              let res = absNWS (stringToNWS (string a))
               let exp = stringToNWS (string (System.Math.Abs a))
               Expect.isTrue (isEqualNWS res exp)                          
          ]   
@@ -171,8 +169,8 @@ let Tests3 =
 let Tests4=
     testList "Tests for helping functions. Int64"
         [testProperty "Test for greater" <| fun (a: int64, b: int64) ->
-            let a1 = System.Math.Abs a
-            let b1 = System.Math.Abs b
+            let a1 = abs a
+            let b1 = abs b
             if a1 > b1
             then Expect.isTrue (fstGreaterThanSec  (stringToMyList (string a1)) (stringToMyList (string b1)))
             else Expect.isFalse (fstGreaterThanSec (stringToMyList (string a1)) (stringToMyList (string b1)))

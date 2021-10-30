@@ -225,7 +225,7 @@ let power (n: NumberWithSign) (pow: NumberWithSign) =
                then NumberWithSign ((go n.number pow.number), true)
                else NumberWithSign ((go n.number pow.number), false)
         
-let abs (a: NumberWithSign)  =
+let absNWS (a: NumberWithSign)  =
     NumberWithSign(a.number, true)
     
 let unMinus (a: NumberWithSign) =

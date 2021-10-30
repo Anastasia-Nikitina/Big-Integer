@@ -23,7 +23,7 @@ let rec processExpr (vDict:Dictionary<AST.VName,AST.Expression>) expr =
     | AST.Div (x, y) -> division (processExpr vDict x) (processExpr vDict y)
     | AST.Rem (x, y) -> remainder (processExpr vDict x) (processExpr vDict y)
     | AST.Pow (x, y) -> power (processExpr vDict x) (processExpr vDict y)
-    | AST.Abs x -> abs (processExpr vDict x)
+    | AST.Abs x -> absNWS (processExpr vDict x)
     | AST.Bin x -> toBin (processExpr vDict x)
 
 let processStmt (vDict:Dictionary<AST.VName,AST.Expression>) (pDict:Dictionary<string,string>) stmt =
