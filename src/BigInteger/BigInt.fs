@@ -1,27 +1,11 @@
 ﻿module BigInt
-open System
 open MyList
 
 type NumberWithSign =
     val sign: bool
     val number: MyList<int>
     new(a, s) = {number = a; sign = s}
-
-let private tryParseWith (tryParseFunc: string -> bool * _) =
-    tryParseFunc >> function
-    | true, v -> Some v
-    | false, _ -> None
-    
-let stringToMyList (str: string) =
-    let listOfInt =
-        [for ch in str do
-            match tryParseWith Int32.TryParse (string ch) with
-            | None -> failwith $"Could not parse symbol: %A{ch} in %s{str}"
-            | Some intValue -> intValue
-        ]
-    
-    systemToMyList listOfInt
-
+  
 let stringToNWS (string: string) =
     if string.[0] = '-'
     then NumberWithSign (stringToMyList (string.[1..string.Length-1]), false)

@@ -1,5 +1,5 @@
 ﻿module MyList
-
+open System
 type MyList<'t> =
     | Single of 't
     | Cons of 't * MyList<'t>
@@ -34,7 +34,20 @@ let rec systemToMyList list =
     | [] -> failwith "Empty list"
     | [a] -> Single a
     | head :: tail -> Cons (head, systemToMyList tail)
-
+    
+let private tryParseWith (tryParseFunc: string -> bool * _) =  
+    tryParseFunc >> function                                   
+    | true, v -> Some v                                        
+    | false, _ -> None                                             
+let stringToMyList (str: string) =                                                
+    let listOfInt =                                                               
+        [for ch in str do                                                         
+            match tryParseWith Int32.TryParse (string ch) with                    
+            | None -> failwith $"Could not parse symbol: %A{ch} in %s{str}"       
+            | Some intValue -> intValue                                           
+        ]                                                                         
+                                                                                  
+    systemToMyList listOfInt                                                      
 let rec myListToSystem list =
     match list with
     | Single x -> [x]

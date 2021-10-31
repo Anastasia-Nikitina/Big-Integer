@@ -136,7 +136,7 @@ let Tests3 =
              let res = addition (stringToNWS (string a)) (stringToNWS (string b)) 
              let exp = stringToNWS (string (a + b))
              Expect.isTrue (isEqualNWS res exp)
-          testProperty "Test for mult" <| fun (a:  BigInteger, b: BigInteger) ->
+          testProperty "Test for mult" <| fun (a: BigInteger, b: BigInteger) ->
              let res = multiplication (stringToNWS (string a)) (stringToNWS (string b))
              let exp = stringToNWS (string (a * b))
              Expect.isTrue (isEqualNWS res exp)
