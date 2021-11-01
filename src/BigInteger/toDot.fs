@@ -5,9 +5,7 @@ open AST
 
     let rec drawTree ast output =
         let createStr label counter = [(sprintf "\"x%A\"" counter)] @ [sprintf " [shape = ellipse, label = %A]; \n" label] 
-
         let addLabel res label prevLabel c = res @ createStr label c @ [sprintf "\"x%A\"" prevLabel] @ [ "->" ] @ [sprintf "\"x%A\"" c] @ [";\n"]
-
         let mutable c = 0
         let rec expToDot expr res prevLabel =
             c <- c + 1
