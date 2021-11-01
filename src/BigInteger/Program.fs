@@ -10,7 +10,7 @@ let SystemToMyBigInt (x: BigInteger) =
         let y = x |> string
         let newX = if y.[0] = '-' then y.[1..] else y
         let list = newX |> List.ofSeq |> List.map (string >> int) |> systemToMyList
-        NumberWithSign(list, (if x >= BigInteger 0 then true else false))
+        NumberWithSign(list, (x >= BigInteger 0))
         
 type CLIArguments =
         | InputFile of file:string

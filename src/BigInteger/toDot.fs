@@ -1,4 +1,4 @@
-﻿module toDot
+﻿module ToDot
 open BigInt
 open MyList
 open AST

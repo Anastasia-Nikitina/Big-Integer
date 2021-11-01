@@ -184,16 +184,13 @@ let division (a: NumberWithSign) (b: NumberWithSign) =
     | (true, true) | (false, false) -> NumberWithSign(goDiv a.number b.number, true)
     | (false, true) | (true, false) ->
         let div = goDiv a.number b.number
-        NumberWithSign(div, if div = Single 0 then true else false)
-
+        NumberWithSign (div, (div = Single 0))
 let remainder (a: NumberWithSign) (b: NumberWithSign) =   
     subtraction a (multiplication (division a b) b)
     
-let isOdd (a: NumberWithSign)  =
-    if ((head (reverse a.number)) % 2) = 0 then true else false
-    
+let isOdd (a: NumberWithSign) = ((head (reverse a.number)) % 2) = 0 
 let power (n: NumberWithSign) (pow: NumberWithSign) =
-    if pow.sign = false then failwith "Power can't be negative"
+    if not pow.sign then failwith "Power can't be negative"
     let rec go (nList: MyList<_>) (pow: MyList<_>) =
         match pow with
         | Single 0 -> Single 1

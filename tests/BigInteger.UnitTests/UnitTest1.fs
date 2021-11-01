@@ -22,7 +22,7 @@ let systemToMyBigInt (x: BigInteger) =
     let y = string x
     let newX = if y.[0] = '-' then y.[1..] else y
     let list = newX |> List.ofSeq |> List.map (string >> int) |> systemToMyList
-    NumberWithSign(list, (if x >= BigInteger 0 then true else false))
+    NumberWithSign(list, (x >= BigInteger 0))
 
 let intToBinary x =
     let mutable r = if x = 0 then "0" else ""
