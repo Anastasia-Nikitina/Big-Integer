@@ -2,7 +2,7 @@
 open System.Numerics
 open BigInt
 open MyList
-open toDot
+open ToDot
 open Argu
 open FSharp.Text.Lexing
 
