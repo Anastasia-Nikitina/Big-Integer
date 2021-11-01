@@ -196,7 +196,7 @@ let power (n: NumberWithSign) (pow: NumberWithSign) =
         | Single 0 -> Single 1
         | Single 1 -> nList
         | _ ->
-            let (div, rem) = (goDiv pow (Single 2), goRem pow (Single 2))
+            let div, rem = (goDiv pow (Single 2), goRem pow (Single 2))
             let p = go nList div
             let p1 = goMult p p
             if rem = Single 0 then p1 else (goMult p1 nList)
