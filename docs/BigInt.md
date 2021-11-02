@@ -1,6 +1,6 @@
 # BigInt
 
-BigInt is library of a long arithmetic used in the BigIntCalc
+BigInt is library of a long arithmetic used in the BigInteger
 
 ## Type
 
