@@ -117,7 +117,7 @@ let goMult (a: MyList<_>) (b: MyList<_>) =
             let res = 
                 if deg = Single 1 then multToNum a hd_b
                 else concat (multToNum a hd_b) (slice deg 1 ((length deg) - 1))
-            go a tl_b (goSum sum res) (acc+1)   
+            go a tl_b (goSum sum res) (acc + 1)   
     if  fstGreaterThanSec a b 
     then reverse (transfer (reverse (go a (reverse b) (Single 0) 0)))
     else reverse (transfer (reverse (go b (reverse a) (Single 0) 0)))
