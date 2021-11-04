@@ -117,7 +117,7 @@ let goMult (a: MyList<_>) (b: MyList<_>) =
             let res = 
                 if deg = Single 1 then multToNum a hd_b
                 else concat (multToNum a hd_b) (slice deg 1 ((length deg) - 1))
-            go a tl_b (goSum sum res) (acc+1)   
+            go a tl_b (goSum sum res) (acc + 1)   
     if  fstGreaterThanSec a b 
     then reverse (transfer (reverse (go a (reverse b) (Single 0) 0)))
     else reverse (transfer (reverse (go b (reverse a) (Single 0) 0)))
@@ -184,22 +184,19 @@ let division (a: NumberWithSign) (b: NumberWithSign) =
     | (true, true) | (false, false) -> NumberWithSign(goDiv a.number b.number, true)
     | (false, true) | (true, false) ->
         let div = goDiv a.number b.number
-        NumberWithSign(div, if div = Single 0 then true else false)
-
+        NumberWithSign (div, (div = Single 0))
 let remainder (a: NumberWithSign) (b: NumberWithSign) =   
     subtraction a (multiplication (division a b) b)
     
-let isOdd (a: NumberWithSign)  =
-    if ((head (reverse a.number)) % 2) = 0 then true else false
-    
+let isOdd (a: NumberWithSign) = ((head (reverse a.number)) % 2) = 0 
 let power (n: NumberWithSign) (pow: NumberWithSign) =
-    if pow.sign = false then failwith "Power can't be negative"
+    if not pow.sign then failwith "Power can't be negative"
     let rec go (nList: MyList<_>) (pow: MyList<_>) =
         match pow with
         | Single 0 -> Single 1
         | Single 1 -> nList
         | _ ->
-            let (div, rem) = (goDiv pow (Single 2), goRem pow (Single 2))
+            let div, rem = (goDiv pow (Single 2), goRem pow (Single 2))
             let p = go nList div
             let p1 = goMult p p
             if rem = Single 0 then p1 else (goMult p1 nList)

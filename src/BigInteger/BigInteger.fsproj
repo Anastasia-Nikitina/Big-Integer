@@ -4,6 +4,10 @@
         <TargetFramework>net5.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <OutputType>Exe</OutputType>
+        <PackageId>BigInteger</PackageId>
+        <Version>0.1.1</Version>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/Anastasia-Nikitina/Big-Integer</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
