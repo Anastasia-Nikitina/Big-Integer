@@ -82,4 +82,5 @@ let parse text =
         printfn "line %A, column %A;" (line+1) (column+1)
         printfn "Last token %A" lastToken
         printfn "Message %A" message
-        exit 1   
+        let errorString = (sprintf "Execution failed at: line %A, column %A. Last token %A" (line + 1) (column + 1) lastToken) 
+        failwithf "%A" errorString   
