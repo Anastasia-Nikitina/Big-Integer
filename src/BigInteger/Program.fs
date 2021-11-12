@@ -44,7 +44,7 @@ let main (argv: string array) =
         let ast = parse input
         if p.Contains(Compute)
         then
-            let _, _, pD = Interpreter.run ast
-            printfn "%s" pD.[Interpreter.outputBuffer]
+            let pD = Interpreter.runPrint ast
+            printfn "%s" pD
         if p.Contains(ToDot) then drawTree ast (results.GetResult ToDot)
     0     

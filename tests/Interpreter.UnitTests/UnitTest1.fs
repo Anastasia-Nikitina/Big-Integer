@@ -12,8 +12,8 @@ let example =
     print y
     print z
     """
-let _, _, pD = run (parse example)
-printfn "%s" pD.["print"]
+let pD = runPrint (parse example)
+printfn "%s" pD
 printfn "Expected \n10\n7\n22"
 
 [<Tests>]
