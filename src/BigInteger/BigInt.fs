@@ -208,7 +208,7 @@ let power (n:NumberWithSign) (pow:NumberWithSign) =
         | _ ->
             let rm, div = (remainder p (NumberWithSign ( Single 2, true) )), (division p (NumberWithSign ( Single 2, true)) )
             let nr = go r div
-            if rm = NumberWithSign (Single 0, true) then multiplication nr nr else multiplication n (multiplication nr nr) 
+            if rm.number = (Single 0) then multiplication nr nr else multiplication n (multiplication nr nr) 
     if not pow.sign then failwith "Positive power expected"
     else go n pow
         
