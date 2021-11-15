@@ -25,10 +25,6 @@ type CLIArguments =
                 | InputString _ -> "String of code" 
                 | Compute -> "Return the result of interptetation of given code"
                 | ToDot _ -> "Generates dot code of syntax tree to the given file"
-let parse text =
-        let lexbuf = LexBuffer<char>.FromString text
-        let parsed = Parser.start Lexer.tokenStream lexbuf
-        parsed
 
 [<EntryPoint>]
 let main (argv: string array) =
@@ -41,7 +37,7 @@ let main (argv: string array) =
             if p.Contains(InputFile) then System.IO.File.ReadAllText (results.GetResult InputFile)
             elif p.Contains(InputString) then results.GetResult InputString
             else failwith "No input code given"
-        let ast = parse input
+        let ast = Interpreter.parse input
         if p.Contains(Compute)
         then
             let pD = Interpreter.runPrint ast

@@ -8,7 +8,7 @@ type NumberWithSign =
   
 let stringToNWS (string: string) =
     if string.[0] = '-'
-    then NumberWithSign (stringToMyList (string.[1..string.Length-1]), false)
+    then NumberWithSign (stringToMyList string.[1..string.Length-1], false)
     else NumberWithSign (stringToMyList string, true)
 
 let NWSToString (a: NumberWithSign) =
@@ -18,10 +18,10 @@ let NWSToString (a: NumberWithSign) =
 let fstGreaterThanSec (x: MyList<int>) (y: MyList<int>) = // выводит true если первое число больше второго
     let rec go (x: MyList<int>) (y: MyList<int>) =
         match (x, y) with
-        | (Single a, Single b) -> a > b          
-        | (Single _, Cons _) -> false         
-        | (Cons _, Single _) -> true
-        | (Cons(hd1, tail1), Cons(hd2, tail2)) ->
+        | Single a, Single b -> a > b          
+        | Single _, Cons _ -> false         
+        | Cons _, Single _ -> true
+        | Cons(hd1, tail1), Cons(hd2, tail2) ->
             if length x <> length y then length x > length y                            
             elif hd1 <> hd2 then hd1 > hd2                                                        
             else go tail1 tail2
@@ -51,16 +51,16 @@ let removeZeros (a: MyList<int>) =
     go a
 
 let goSub (x: MyList<int>) (y: MyList<int>) =
-    let (a, b) = addZeros x y
+    let a, b = addZeros x y
     let rec go (a: MyList<_>) (b: MyList<_>) transfer =
         match (a, b) with
-        | (Cons(head_a, tail_a), Cons(head_b, tail_b)) ->
+        | Cons(head_a, tail_a), Cons(head_b, tail_b) ->
             if head_a - transfer < head_b
             then Cons(head_a + 10 - head_b - transfer, go tail_a tail_b 1)
             else Cons(head_a - head_b - transfer, go tail_a tail_b 0)
-        | (Single a, Single b) ->
+        | Single a, Single b ->
             Single (a - transfer - b)
-        | (_, _) -> failwithf "Error"
+        | _, _ -> failwithf "Error"
     if fstGreaterThanSec a b
     then removeZeros (reverse (go (reverse a) (reverse b) 0))
     else removeZeros (reverse (go (reverse b) (reverse a) 0))
@@ -84,14 +84,14 @@ let transfer (x: MyList<_>) =
     go x 0 
         
 let goSum (x: MyList<_>) (y: MyList<_>) = 
-    let (a, b) = addZeros x y
+    let a, b = addZeros x y
     let rec go (a: MyList<_>) (b: MyList<_>) =                           
         match (a, b) with
-        | (Cons(hd_a, tl_a), Cons(hd_b, tl_b)) ->             
+        | Cons(hd_a, tl_a), Cons(hd_b, tl_b) ->             
             Cons(hd_a + hd_b, go tl_a tl_b)
-        | (Single a, Single b) ->           
+        | Single a, Single b ->           
             Single (a + b)
-        | (_, _) -> failwith "Error"    
+        | _, _ -> failwith "Error"    
     removeZeros (reverse (transfer (go (reverse a) (reverse b))))
    
 let multToNum (a: MyList<_>) n =
@@ -102,18 +102,29 @@ let multToNum (a: MyList<_>) n =
         | Cons(hd, tl) ->
             Cons(hd * n, go tl n)
     reverse(transfer (go (reverse a) n))
+    
+let zeroConcat acc =
+    let rec go acc resstr =
+        match acc with
+        | 0 -> resstr
+        | _ ->
+            let s1 = resstr + "0"
+            go (acc - 1) s1
+    (go acc "1")
            
 let goMult (a: MyList<_>) (b: MyList<_>) =
     let rec go (a: MyList<_>) (b: MyList<_>) (sum: MyList<_>) acc = 
         match (a, b) with
-        | (a, Single b) ->
-            let deg = stringToMyList (string (float 10**float acc))
+        | a, Single b ->
+            let temp = zeroConcat acc
+            let deg = stringToMyList temp
             let res = 
                 if deg = Single 1 then multToNum a b
                 else concat (multToNum a b) (slice deg 1 ((length deg) - 1))                
             goSum res sum           
-        | (a, Cons(hd_b, tl_b)) ->                      
-            let deg = stringToMyList (string (float 10**float acc))
+        | a, Cons(hd_b, tl_b) ->
+            let temp = zeroConcat acc
+            let deg = stringToMyList temp
             let res = 
                 if deg = Single 1 then multToNum a hd_b
                 else concat (multToNum a hd_b) (slice deg 1 ((length deg) - 1))
@@ -124,18 +135,18 @@ let goMult (a: MyList<_>) (b: MyList<_>) =
 
 let subtraction (a: NumberWithSign) (b: NumberWithSign) =
     match (a.sign, b.sign) with
-    | (true, true) | (false, false) ->
+    | true, true | false, false ->
         let eq = isEqual a.number b.number
         if (fstGreaterThanSec a.number b.number) || eq
         then NumberWithSign ((goSub a.number b.number), eq || a.sign)
         else NumberWithSign ((goSub a.number b.number), not a.sign)
-    | (false, true) | (true, false) -> NumberWithSign ((goSum a.number b.number), a.sign)
+    | false, true | true, false -> NumberWithSign ((goSum a.number b.number), a.sign)
 
 let addition (a: NumberWithSign) (b : NumberWithSign) =
     match (a.sign, b.sign) with
-    | (true, true) | (false, false) ->
+    | true, true | false, false ->
         NumberWithSign((goSum a.number b.number), a.sign)
-    | (false, true) | (true, false)  ->
+    | false, true | true, false  ->
         let eq = isEqual a.number b.number
         if fstGreaterThanSec a.number b.number
         then NumberWithSign ((goSub a.number b.number), eq || a.sign)
@@ -143,8 +154,8 @@ let addition (a: NumberWithSign) (b : NumberWithSign) =
  
 let multiplication (a: NumberWithSign) (b: NumberWithSign) =
     match (a.sign, b.sign) with
-    | (true, true) | (false, false) -> NumberWithSign (goMult a.number b.number, true)
-    | (true, false) | (false, true) -> NumberWithSign (goMult a.number b.number, (a.number = Single 0) || (b.number = Single 0))
+    | true, true | false, false -> NumberWithSign (goMult a.number b.number, true)
+    | true, false | false, true -> NumberWithSign (goMult a.number b.number, (a.number = Single 0) || (b.number = Single 0))
 
 let selection (x: MyList<int>) (y: MyList<int>) =
     let mutable k = 1
@@ -181,30 +192,25 @@ let goRem (x: MyList<_>) (y: MyList<_>) =
 
 let division (a: NumberWithSign) (b: NumberWithSign) =
     match (a.sign, b.sign) with
-    | (true, true) | (false, false) -> NumberWithSign(goDiv a.number b.number, true)
-    | (false, true) | (true, false) ->
+    | true, true | false, false -> NumberWithSign(goDiv a.number b.number, true)
+    | false, true | true, false ->
         let div = goDiv a.number b.number
         NumberWithSign (div, (div = Single 0))
 let remainder (a: NumberWithSign) (b: NumberWithSign) =   
     subtraction a (multiplication (division a b) b)
     
 let isOdd (a: NumberWithSign) = ((head (reverse a.number)) % 2) = 0 
-let power (n: NumberWithSign) (pow: NumberWithSign) =
-    if not pow.sign then failwith "Power can't be negative"
-    let rec go (nList: MyList<_>) (pow: MyList<_>) =
-        match pow with
-        | Single 0 -> Single 1
-        | Single 1 -> nList
+let power (n:NumberWithSign) (pow:NumberWithSign) =
+    let rec go r (p:NumberWithSign) =
+        match p.number with
+        | Single 0 -> NumberWithSign(Single 1, true)
+        | Single 1 -> r
         | _ ->
-            let div, rem = (goDiv pow (Single 2), goRem pow (Single 2))
-            let p = go nList div
-            let p1 = goMult p p
-            if rem = Single 0 then p1 else (goMult p1 nList)
-    match n.sign with
-    | true -> NumberWithSign ((go n.number pow.number), true)
-    | false -> if isOdd pow 
-               then NumberWithSign ((go n.number pow.number), true)
-               else NumberWithSign ((go n.number pow.number), false)
+            let rm, div = (remainder p (NumberWithSign ( Single 2, true) )), (division p (NumberWithSign ( Single 2, true)) )
+            let nr = go r div
+            if rm = NumberWithSign (Single 0, true) then multiplication nr nr else multiplication n (multiplication nr nr) 
+    if not pow.sign then failwith "Positive power expected"
+    else go n pow
         
 let absNWS (a: NumberWithSign)  =
     NumberWithSign(a.number, true)
