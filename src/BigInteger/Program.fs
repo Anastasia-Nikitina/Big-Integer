@@ -17,7 +17,6 @@ type CLIArguments =
         | InputString of code:string
         | Compute
         | ToDot of output:string
-
         interface IArgParserTemplate with
             member s.Usage =
                 match s with
