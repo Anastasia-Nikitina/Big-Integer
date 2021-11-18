@@ -28,9 +28,22 @@
 
 start: stmt {[$1]}
      | stmt start {$1 :: $2}
+     | SUM {failwith "Unexpected symbol '+'"}
+     | SUB {failwith "Unexpected symbol '-'"}
+     | MUL {failwith "Unexpected symbol '*'"}
+     | DIV {failwith "Unexpected symbol '/'"}
+     | REM {failwith "Unexpected symbol '%'"}
+     | POW {failwith "Unexpected symbol '^'"}
+     | BIN {failwith "Unexpected symbol '&'"}
+     | VNAME {failwith "Unexpected symbol"}
+     | ABS {failwith "Unexpected symbol"}
+     | EQ {failwith "Unexpected symbol ''"}
+     | LBR {failwith "Unexpected symbol '('"}
+     | RBR {failwith "Unexpected symbol ')'"}
      
-stmt: KW_PRINT vname {AST.Print($2)}
+stmt: 
     | KW_LET vname EQ expr {AST.VDecl($2,$4)}
+    | KW_PRINT vname {AST.Print($2)}
 
 expr: rexpr {$1}
     | expr SUM rexpr {AST.Sum($1, $3)}
