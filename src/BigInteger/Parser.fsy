@@ -40,6 +40,7 @@ start: stmt {[$1]}
      | EQ {failwith "Unexpected symbol ''"}
      | LBR {failwith "Unexpected symbol '('"}
      | RBR {failwith "Unexpected symbol ')'"}
+     | NUM {failwith "Unexpected symbol"}
      
 stmt: 
     | KW_LET vname EQ expr {AST.VDecl($2,$4)}
