@@ -8,7 +8,7 @@
         <Version>0.1.1</Version>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/Anastasia-Nikitina/Big-Integer</RepositoryUrl>
-        <PackageVersion>0.1.5</PackageVersion>
+        <PackageVersion>0.1.6</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
